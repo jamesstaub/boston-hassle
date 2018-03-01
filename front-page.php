@@ -33,7 +33,7 @@ Template Name: Homepage
           query_posts ($args);
 
           if (have_posts()) : while (have_posts()) : the_post();
-          
+
         ?>
           <article class="hero"><a href="<?php the_permalink(); ?>">
 
@@ -49,7 +49,7 @@ Template Name: Homepage
               // use a custom excerpt if there is one, or if not use the subtitle,
               // and if there's neither, use the automatic excerpt
                 if ( has_excerpt() ) {
-                  the_excerpt(); 
+                  the_excerpt();
                 } elseif ( get_field('subtitle') ) {
                   echo '<p class="excerpt">';
                   the_field('subtitle');
@@ -61,7 +61,7 @@ Template Name: Homepage
               <p class="meta"><?php echo get_the_author(); ?></p>
             </div>
 
-          </a></article>  
+          </a></article>
         <?php
           endwhile; endif;
           wp_reset_query();
@@ -94,6 +94,9 @@ Template Name: Homepage
             </p>
             <h3><a href="<?php echo esc_url( tribe_get_event_link() ); ?>"><?php the_title(); ?></a></h3>
             <p class="meta category"><?php echo tribe_get_venue(); ?></p>
+            <?php if ( tribe_get_custom_field() ) : ?>
+              <p class="tribe-events-cost"><?php echo tribe_get_custom_field( 'Age' ) ?></p>
+            <?php endif; ?>
           </article>
         <?php } wp_reset_postdata(); ?>
         <a class="view-all" href="<?php echo tribe_get_events_link(); ?>">View All</a>
@@ -176,12 +179,12 @@ Template Name: Homepage
       <div>
         <?php // General stream of articles
           $loop = new WP_Query( array(
-            'posts_per_page'=>8, 
+            'posts_per_page'=>8,
             'ignore_sticky_posts'=>true,
             'post__not_in' => $featured_ids, // exclude featured posts, since they've already appeared above
             'category__not_in' => $picture_cat->term_id// exclude, since this has its own bigger section
           ) );
-          while ($loop->have_posts()) : 
+          while ($loop->have_posts()) :
             $class = 'default';
             $loop->the_post();
             include 'partials/article.php';
@@ -197,11 +200,11 @@ Template Name: Homepage
         <h2><?php echo $picture_cat->name; ?></h2>
         <?php
           $loop = new WP_Query( array(
-            'posts_per_page'=> 9, 
-            'ignore_sticky_posts'=>true, 
+            'posts_per_page'=> 9,
+            'ignore_sticky_posts'=>true,
             'cat'=>$picture_cat->term_id
           ) );
-          while ($loop->have_posts()) : 
+          while ($loop->have_posts()) :
             $loop->the_post();
         ?>
           <article><a href="<?php the_permalink(); ?>">
@@ -234,13 +237,13 @@ Template Name: Homepage
       <div>
         <?php // General stream of articles, continued
         $loop = new WP_Query( array(
-          'posts_per_page'=>8, 
-          'ignore_sticky_posts'=>true, 
-          'offset' => 8, 
+          'posts_per_page'=>8,
+          'ignore_sticky_posts'=>true,
+          'offset' => 8,
           'post__not_in' => $featured_ids,
           'category__not_in' => $picture_cat->term_id
         ) );
-        while ($loop->have_posts()) : 
+        while ($loop->have_posts()) :
           $class = 'default';
           $loop->the_post();
           include 'partials/article.php';
